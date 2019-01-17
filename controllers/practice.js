@@ -1,6 +1,5 @@
 const Models = require('../models/practice');
 
-
 exports.getWord = (req, res, next) => {        
     Models.getWord(req.query.amount)
     .then(([rows]) => {

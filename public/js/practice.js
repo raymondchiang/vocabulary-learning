@@ -10,13 +10,13 @@ for (var i = 0; i < stringify.length; i++) {
         star:stringify[i]["star"], 
         proficiency: stringify[i]["proficiency"]});
 }
-console.log(allWord);
+//console.log(allWord);
 //------------------------------------------------------
-
 var currWordNum = 0; //紀錄目前為第幾個單字
 var currWord = document.getElementById('currWord'); //紀錄目前word
 var currTransWord = document.getElementById('currTransWord'); // 紀錄目前transWord
 
+//初始化頁面單字
 currWord.innerHTML = allWord[currWordNum]['word'];
 
 function btnKnow() {
@@ -58,6 +58,7 @@ function checkWord() {
     //console.log('allWord.length:    ', allWord.length);
     if (currWordNum === allWord.length-1) {
         alert('讀完了');
+        getBack();
         return false;
     }
     else{
