@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/css/style.css' />
+</head>
+
+<body>
+    <div class="container">
+        <div justify-content-between> 
+            <h1 class="text-center d-4 text-info"><%= title %></h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <input type="text" name="searchBox" class="form-control" placeholder="Search">   
+            </div>
+            <div style="padding:5px; background-color:white;"></div>
+            <div class="col-xs-4">
+                <button type="submit" class="btn btn-primary" onclick="Search();">搜尋</button>
+            </div>
+            <div style="padding:5px; background-color:white;"></div>
+            <div class="col-xs-4">
+                <button type="button" class="btn btn-success" data-toggle="modal" onclick = "inputAddClean();" data-target="#addModal">新增</button>
+            </div>
+            <div style="padding:5px; background-color:white;"></div>
+            <div class="col-xs-4">
+                <button type="button" class="btn btn-danger" data-toggle="modal" onclick = "getBack();">返回</button>                
+            </div>                                
+        </div>
+    </div>    
+    <br>
+    <table class="table table-striped">
+        <thead class="bg-info">
+            <tr>
+                <th scope="row" class="align-middle m-2">單字</th>
+                <th scope="row" class="align-middle m-2">意思</th>
+                <th scope="row" class="align-middle m-2">熟練度</th>
+                <th scope="row" class="align-middle m-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for ( var i = 0 ; i < data.length ; i++){ %>
+            <tr>
+                <td class="align-middle">
+                    <%= data[i].word  %>
+                </td>
+                <td  class="align-middle">
+                    <%= data[i].transWord  %>
+                </td>
+                <td  class="align-middle">
+                    <%= data[i].star  %>
+                </td>
+                <td  class="align-middle">
+                    <button type="button"
+                            name="edit" 
+                            class="btn btn-warning btn-sm" 
+                            data-toggle="modal" 
+                            data-target="#editModal" 
+                            onclick="getEditPageData('<%= data[i].word  %>', '<%= data[i].transWord  %>', '<%=data[i].star  %>', '<%= data[i].ID  %>');">
+                        編輯
+                    </button>
+                    <input type="button" name="delete" value="刪除" class="btn btn-danger btn-sm" onclick="Delete('<%= data[i].ID  %>');" />
+                </td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-content" role="document">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">新增</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body container">
+                <form name="editform" action="/AddEditDel_word/create" method="post" accept-charset="utf-8" onSubmit="return addCheck();">
+                    <input type="text" class="form-control d-none" id="addId" name="addId" >
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="addWord" name="addWord" aria-describedby="NameHelp" placeholder="單字">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="addTransWord" name="addTransWord" placeholder="意思">
+                    </div>
+                    <input type="text" class="form-control d-none" id="addStar" name="addStar" value="Weak">
+                    <div class="dropdown form-group">
+                        <button id="addStarBtn" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Weak</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="addItemWeak(this.innerHTML);" href="#">Weak</a>
+                            <a class="dropdown-item" onclick="addItemGood(this.innerHTML);" href="#">Good</a>
+                            <a class="dropdown-item" onclick="addItemWell(this.innerHTML);" href="#">Well</a>
+                        </div>
+                    </div>
+                    <td  class="align-middle">
+                        <button type="submit" class="btn btn-primary">確定</button>
+                    </td>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-content" role="document">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">編輯</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body container">
+                <form name="editform" action="/AddEditDel_word/update" method="post" accept-charset="utf-8" onSubmit="return EditCheck();">
+                    <input type="text" class="form-control d-none" id="editId" name="editId" >
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="editWord" name="editWord" aria-describedby="NameHelp" placeholder="單字">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="editTransWord" name="editTransWord" placeholder="意思">
+                    </div>
+
+                    <input type="text" class="form-control d-none" id="editStar" name="editStar">
+                    <div class="dropdown form-group">
+                        <button id="editStarBtn" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Weak</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="editItemWeak(this.innerHTML);" href="#">Weak</a>
+                            <a class="dropdown-item" onclick="editItemGood(this.innerHTML);" href="#">Good</a>
+                            <a class="dropdown-item" onclick="editItemWell(this.innerHTML);" href="#">Well</a>
+                        </div>
+                    </div>
+
+                    <td  class="align-middle">
+                        <button type="submit" class="btn btn-primary">確定</button>
+                    </td>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/AddEditDelWord.js"></script>
+    <script src="/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%=title%></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='/css/style.css' />
+
+</head>
+
+<body>
+    <div class="container">
+        <p id="wordJson" class="d-none"><%= JSON.stringify(data) %></p>
+        <button type="button" class="btn btn-danger" data-toggle="modal" onclick="getBack();">返回</button>
+        <br><br>
+
+        <div class="card text-center text-white bg-dark mb-3">
+            <div class="card-header" id="cardHeader">還有<%= data.length %>個</div>
+            <div class="card-body">
+                <h2 class="card-title" id="currWord"><%= data[0].word %></h2>
+                <br>
+                <h2 class="card-text" id="currTransWord">?</h2>
+                <br>
+                <a href="#" id="notKnow" class="btn btn-warning" onclick="btnNotKnow();">我不會</a>
+                <a href="#" id="know" class="btn btn-success" onclick="btnKnow();">我知道</a>
+                <a href="#" id="next" class="btn btn-success d-none" onclick="btnNext();">下一個</a>
+                
+            </div>
+            <div class="card-footer text-muted">@Raymond</div>
+        </div>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/practice.js"></script>
+    <script src="/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>
